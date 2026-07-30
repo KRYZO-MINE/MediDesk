@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="MediDesk - Your saved favorite medicines" />
+    <meta name="theme-color" content="#2563eb" />
+    <title>MediDesk — Favorites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Cpath d='M50 20v60M20 50h60' stroke='white' stroke-width='11' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body class="min-h-screen">
+
+    <header id="navbar" class="navbar px-4 sm:px-6 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 shadow-sm flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </div>
+                <div class="leading-tight">
+                    <div class="logo-text text-2xl">MediDesk</div>
+                    <div class="text-xs" style="color: var(--color-text-muted);">Medicine Info, Offline</div>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-1" style="color: var(--color-text-soft);">
+                <a href="categories.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">Categories</a>
+                <a href="az-list.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">A–Z List</a>
+                <a href="favorites.html" id="nav-favorites" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors relative" style="background: var(--color-primary-bg); color: var(--color-primary);">
+                    Favorites
+                    <span id="fav-count" class="hidden ml-1 inline-flex items-center justify-center w-5 h-5 text-[11px] font-bold rounded-full bg-[var(--color-primary)] text-white">0</span>
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <div class="hidden md:flex items-center gap-2 mr-2">
+                    <input id="nav-search" type="text" class="input py-2 text-sm w-56" placeholder="Search symptoms..." autocomplete="off" />
+                </div>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+                    <svg id="icon-sun" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                    <svg id="icon-moon" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden theme-toggle" aria-label="Open menu">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M3 12h18M3 18h18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden mt-3 hidden grid gap-2 px-1"></div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16 pt-6">
+
+        <section class="hero-gradient rounded-[28px] px-5 sm:px-10 py-10 sm:py-14 relative overflow-hidden animate-fade-up">
+            <div class="pointer-events-none absolute inset-0 opacity-50 dark:opacity-30"
+                 style="background: radial-gradient(600px 300px at 100% 100%, transparent, rgba(239,68,68,0.22) 40%, transparent 70%);"></div>
+            <div class="relative">
+                <span class="badge badge-warning inline-flex items-center gap-1.5 mb-4 animate-pop-in">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.65-7 10-7 10h-4z"/></svg>
+                    Saved for later
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight animate-fade-up delay-1" style="color: var(--color-text);">
+                    Your <span class="logo-text">Favorites</span>
+                </h1>
+                <p class="mt-4 text-base sm:text-lg max-w-2xl animate-fade-up delay-2" style="color: var(--color-text-soft);">
+                    Your shortlisted medicines — saved locally in this browser. Tap the ❤️ on any medicine card to add or remove.
+                </p>
+                <div class="mt-6 flex flex-col sm:flex-row gap-3 animate-fade-up delay-3">
+                    <a href="index.html" class="btn btn-primary inline-flex items-center gap-2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back to Home
+                    </a>
+                    <a href="categories.html" class="btn btn-outline inline-flex items-center gap-2">
+                        🗂 Browse Categories
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-12 animate-fade-up delay-2">
+            <div id="favorites-empty" class="hidden card p-8 text-center mb-6 animate-fade">
+                <div class="text-5xl mb-3">💖</div>
+                <h3 class="font-bold text-lg mb-1" style="color: var(--color-text);">No favorites yet</h3>
+                <p class="mb-4" style="color: var(--color-text-muted);">Tap the heart icon on any medicine card to save it here.</p>
+                <a href="index.html" class="btn btn-primary inline-flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Explore medicines
+                </a>
+            </div>
+            <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"></div>
+        </section>
+    </main>
+
+    <footer class="site-footer mt-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 flex items-center justify-center text-white shadow-sm">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </div>
+                        <div class="logo-text text-xl font-extrabold">MediDesk</div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color: var(--color-text-muted);">
+                        Offline medicine information companion. Search by symptoms in Hinglish / Hindi / English and find relevant medicines instantly.
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <span class="badge badge-otc">100% Offline</span>
+                        <span class="badge badge-info">No AI</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="footer-link">🏠 Home</a></li>
+                        <li><a href="categories.html" class="footer-link">🗂 Categories</a></li>
+                        <li><a href="az-list.html" class="footer-link">🔤 A–Z List</a></li>
+                        <li><a href="favorites.html" class="footer-link">❤️ Favorites</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Popular Searches</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html?q=sir%20dard" class="footer-link">💊 Sir dard / Headache</a></li>
+                        <li><a href="index.html?q=bukhar" class="footer-link">🤒 Bukhar / Fever</a></li>
+                        <li><a href="index.html?q=pet%20dard" class="footer-link">🫃 Pet dard</a></li>
+                        <li><a href="index.html?q=khansi" class="footer-link">😷 Khansi / Cough</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Legal &amp; Info</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="disclaimer.html" class="footer-link">⚠️ Medical Disclaimer</a></li>
+                        <li><a href="disclaimer.html" class="footer-link">📄 Terms of Use</a></li>
+                        <li><a href="disclaimer.html#privacy" class="footer-link">🔒 Privacy Note</a></li>
+                        <li><a href="disclaimer.html#about" class="footer-link">ℹ️ About MediDesk</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="text-xs" style="color: var(--color-text-muted);">
+                    © <span id="year"></span> MediDesk · Built for education purposes only. Not affiliated with any pharmaceutical company.
+                </div>
+                <div class="flex flex-wrap gap-3 text-xs" style="color: var(--color-text-muted);">
+                    <a href="disclaimer.html" class="footer-link">⚠ Read disclaimer</a>
+                    <a href="index.html" class="footer-link">← Back to home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="medicines-data.js"></script>
+    <script src="database.js"></script>
+    <script src="search.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

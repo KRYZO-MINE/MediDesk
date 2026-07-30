@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="MediDesk - Medicine Details" />
+    <meta name="theme-color" content="#2563eb" />
+    <title>MediDesk — Medicine Details</title>
+
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Cpath d='M50 20v60M20 50h60' stroke='white' stroke-width='11' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body class="min-h-screen">
+
+    <!-- NAVBAR -->
+    <header id="navbar" class="navbar px-4 sm:px-6 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 shadow-sm flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </div>
+                <div class="leading-tight">
+                    <div class="logo-text text-2xl">MediDesk</div>
+                    <div class="text-xs" style="color: var(--color-text-muted);">Medicine Info, Offline</div>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-1" style="color: var(--color-text-soft);">
+                <a href="categories.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">Categories</a>
+                <a href="az-list.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">A–Z List</a>
+                <a href="favorites.html" id="nav-favorites" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors relative">
+                    Favorites
+                    <span id="fav-count" class="hidden ml-1 inline-flex items-center justify-center w-5 h-5 text-[11px] font-bold rounded-full bg-[var(--color-primary)] text-white">0</span>
+                </a>
+            </nav>
+
+            <!-- Right side -->
+            <div class="flex items-center gap-2">
+                <div class="hidden md:flex items-center gap-2 mr-2">
+                    <input id="nav-search" type="text" class="input py-2 text-sm w-56" placeholder="Search another medicine..." autocomplete="off" />
+                </div>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+                    <svg id="icon-sun" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                    <svg id="icon-moon" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden theme-toggle" aria-label="Open menu">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M3 12h18M3 18h18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden mt-3 hidden grid gap-2 px-1"></div>
+    </header>
+
+    <main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 pb-24">
+
+        <!-- Back button -->
+        <div class="mb-5 animate-fade">
+            <a href="index.html" class="back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Back to search
+            </a>
+        </div>
+
+        <!-- Loading state -->
+        <div id="loading" class="hidden py-20 text-center animate-fade">
+            <div class="inline-flex flex-col items-center gap-3">
+                <div class="w-14 h-14 rounded-full border-4 border-dashed animate-spin" style="border-color: var(--color-primary-light); border-top-color: var(--color-primary);"></div>
+                <div style="color: var(--color-text-muted);" class="text-sm">Loading medicine…</div>
+            </div>
+        </div>
+
+        <!-- Not found state -->
+        <div id="not-found" class="hidden py-16 text-center animate-fade-up">
+            <div class="text-7xl mb-4">💊</div>
+            <h3 class="text-2xl font-bold mb-2" style="color: var(--color-text);">Medicine not found</h3>
+            <p class="max-w-md mx-auto mb-4" style="color: var(--color-text-muted);">
+                The requested medicine could not be loaded. It may have been removed or the link is broken.
+            </p>
+            <a href="index.html" class="btn btn-primary">Return to Homepage</a>
+        </div>
+
+        <!-- DETAIL CONTENT -->
+        <article id="detail-content" class="hidden">
+            <!-- HERO -->
+            <div class="detail-hero p-5 sm:p-8 mb-8 animate-fade-up">
+                <div class="grid lg:grid-cols-5 gap-6">
+                    <!-- Image placeholder -->
+                    <div class="lg:col-span-2">
+                        <div id="detail-image" class="detail-image">
+                            💊 </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="lg:col-span-3 flex flex-col justify-between gap-4">
+                        <div>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span id="detail-type" class="badge badge-otc"></span>
+                                <span id="detail-category" class="badge badge-soft"></span>
+                                <button id="detail-fav" class="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold transition-all"
+                                        style="background: var(--color-danger-bg); color: var(--color-danger); border: 1px solid transparent;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                    </svg>
+                                    <span id="detail-fav-text">Add to favorites</span>
+                                </button>
+                            </div>
+                            <h1 id="detail-name" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3" style="color: var(--color-text);"></h1>
+                            <p id="detail-desc" class="text-base sm:text-lg mb-5" style="color: var(--color-text-soft);"></p>
+
+                            <!-- Quick tags -->
+                            <div id="detail-quick" class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                                <div class="info-card p-3">
+                                    <h3>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                                            <line x1="6" y1="1" x2="6" y2="4"/>
+                                            <line x1="10" y1="1" x2="10" y2="4"/>
+                                            <line x1="14" y1="1" x2="14" y2="4"/>
+                                        </svg>
+                                        Food
+                                    </h3>
+                                    <p id="detail-food">Either</p>
+                                </div>
+                                <div class="info-card p-3">
+                                    <h3>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <polyline points="12 6 12 12 16 14"/>
+                                        </svg>
+                                        Typical Use
+                                    </h3>
+                                    <p id="detail-typical">—</p>
+                                </div>
+                                <div class="info-card p-3">
+                                    <h3>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                        </svg>
+                                        Used For
+                                    </h3>
+                                    <p id="detail-usedfor-short">—</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FULL DETAILS -->
+            <div class="grid lg:grid-cols-3 gap-6 animate-fade-up delay-2">
+
+                <!-- Left column: Description + Used For + Common Uses -->
+                <div class="lg:col-span-2 space-y-5">
+
+                    <div class="info-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 16v-4"/>
+                                <path d="M12 8h.01"/>
+                            </svg>
+                            Description
+                        </h3>
+                        <p id="detail-desc-long"></p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                            Used For
+                        </h3>
+                        <ul id="detail-usedfor"></ul>
+                        <h3 class="mt-4">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            Common Uses
+                        </h3>
+                        <ul id="detail-commonuses"></ul>
+                    </div>
+
+                </div>
+
+                <!-- Right column: Food + Storage + Side Effects + Avoid If (all stacked vertically) -->
+                <div class="space-y-5">
+
+                    <div class="info-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                                <line x1="6" y1="1" x2="6" y2="4"/>
+                            </svg>
+                            Food Instructions
+                        </h3>
+                        <p id="detail-food-long"></p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/>
+                                <rect x="3" y="7" width="18" height="14" rx="2"/>
+                                <path d="M9 21V11h6v10"/>
+                            </svg>
+                            Storage
+                        </h3>
+                        <p id="detail-storage"></p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Common Side Effects
+                        </h3>
+                        <ul id="detail-sideeffects"></ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                            Avoid If
+                        </h3>
+                        <ul id="detail-avoidif"></ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Warnings -->
+            <div class="space-y-4 animate-fade-up delay-3">
+                <div class="danger-box">
+                    <strong style="color: var(--color-danger);">⚠️ Important Safety Information</strong><br/>
+                    <span id="detail-warning"></span>
+                </div>
+            </div>
+
+            <!-- Related medicines -->
+            <div class="mt-10 animate-fade-up delay-4">
+                <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight mb-4" style="color: var(--color-text);">
+                Related <span class="logo-text">Medicines</span>
+            </h2>
+                <div id="related-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                    <!-- Populated by app.js -->
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- RICH FOOTER -->
+    <footer class="site-footer">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 flex items-center justify-center text-white shadow-sm">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </div>
+                        <div class="logo-text text-xl font-extrabold">MediDesk</div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color: var(--color-text-muted);">
+                        Offline medicine information companion. Search by symptoms in Hinglish / Hindi / English and find relevant medicines instantly.
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <span class="badge badge-otc">100% Offline</span>
+                        <span class="badge badge-info">No AI</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="footer-link">🏠 Home</a></li>
+                        <li><a href="categories.html" class="footer-link">🗂 Categories</a></li>
+                        <li><a href="az-list.html" class="footer-link">🔤 A–Z List</a></li>
+                        <li><a href="favorites.html" class="footer-link">❤️ Favorites</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Popular Searches</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html?q=sir%20dard" class="footer-link">💊 Sir dard / Headache</a></li>
+                        <li><a href="index.html?q=bukhar" class="footer-link">🤒 Bukhar / Fever</a></li>
+                        <li><a href="index.html?q=pet%20dard" class="footer-link">🫃 Pet dard</a></li>
+                        <li><a href="index.html?q=khansi" class="footer-link">😷 Khansi / Cough</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Legal &amp; Info</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="disclaimer.html" class="footer-link">⚠️ Medical Disclaimer</a></li>
+                        <li><a href="disclaimer.html" class="footer-link">📄 Terms of Use</a></li>
+                        <li><a href="disclaimer.html#privacy" class="footer-link">🔒 Privacy Note</a></li>
+                        <li><a href="disclaimer.html#about" class="footer-link">ℹ️ About MediDesk</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="text-xs" style="color: var(--color-text-muted);">
+                    © <span id="year"></span> MediDesk · Built for education purposes only. Not affiliated with any pharmaceutical company.
+                </div>
+                <div class="flex flex-wrap gap-3 text-xs" style="color: var(--color-text-muted);">
+                    <a href="disclaimer.html" class="footer-link">⚠ Read disclaimer</a>
+                    <a href="index.html" class="footer-link">← Back to home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="medicines-data.js"></script>
+    <script src="database.js"></script>
+    <script src="search.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
