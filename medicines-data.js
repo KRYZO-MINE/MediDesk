@@ -1759,6 +1759,38 @@ window.MEDICINES_INLINE = [
     "warning": "FOR EXTERNAL USE ONLY. If applied to large open wounds for long periods, monitor thyroid function. Stains skin and fabrics.",
     "type": "OTC",
     "image": "solution"
+  },
+  {
+    "id": 111,
+    "name": "Famotidine 40mg",
+    "category": "Acidity / Gastric",
+    "keywords": ["famotidine", "famocid", "pepcid", "famotab", "famtak", "h2 blocker"],
+    "description": "A histamine H2-receptor antagonist (H2 blocker) that reduces stomach acid secretion. Safer alternative to ranitidine. Longer acting with fewer drug interactions.",
+    "usedFor": ["Acidity", "Heartburn", "GERD (Mild to Moderate)", "Stomach Ulcer", "Acid Reflux", "Duodenal Ulcer"],
+    "food": "Before food (Empty stomach, 30-60 min before meal)",
+    "typicalUse": "1 tablet once or twice daily. Take 30-60 minutes before first meal of the day or as directed. Bedtime dose for nocturnal acidity.",
+    "sideEffects": ["Headache", "Dizziness", "Constipation or Diarrhea", "Dry mouth", "Rash (rare)"],
+    "avoidIf": ["Hypersensitivity to H2 blockers", "Severe kidney impairment (dose adjustment needed)", "Pregnancy / Lactation (consult doctor)"],
+    "storage": "Store at room temperature below 30Â°C. Protect from light and moisture.",
+    "warning": "Khali pet le - khane se 30-60 min pehle. Long-term use (>1 year) should be monitored by doctor. Preferred H2 blocker over ranitidine due to NDMA-free status.",
+    "type": "OTC",
+    "image": "tablet"
+  },
+  {
+    "id": 112,
+    "name": "Ilaprazole 10mg",
+    "category": "Acidity / Gastric",
+    "keywords": ["ilaprazole", "ipraflux", "alzole", "ilapro", "lapraz", "ppi"],
+    "description": "A newer generation proton pump inhibitor (PPI) with longer half-life and more consistent acid suppression than older PPIs. Effective once-daily dosing.",
+    "usedFor": ["Severe Acidity", "GERD", "Erosive Esophagitis", "Duodenal Ulcer", "H. Pylori Eradication (combination)", "Zollinger-Ellison Syndrome"],
+    "food": "Before food (Empty stomach, 30-60 min before breakfast)",
+    "typicalUse": "1 tablet once daily, 30-60 minutes before breakfast on empty stomach. Swallow whole - do not crush or chew.",
+    "sideEffects": ["Headache", "Abdominal pain", "Nausea", "Diarrhea", "Long-term: B12 deficiency, Magnesium deficiency, Bone density loss"],
+    "avoidIf": ["Hypersensitivity to PPIs or substituted benzimidazoles", "Concomitant use with rilpivirine", "Severe liver disease"],
+    "storage": "Store below 30Â°C in original packaging. Protect from light and moisture.",
+    "warning": "Khali pet subah khana padega - breakfast se 30-60 min pehle. Long-term use requires monitoring of B12, magnesium, and bone health. Take at fixed time daily.",
+    "type": "Prescription",
+    "image": "capsule"
   }
 ];
 
