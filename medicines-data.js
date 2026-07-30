@@ -1,4 +1,4 @@
-﻿// Auto-generated - inlined medicine data for offline file:// access
+// Auto-generated - inlined medicine data for offline file:// access
 window.MEDICINES_INLINE = [
   {
     "id": 1,
@@ -323,17 +323,17 @@ window.MEDICINES_INLINE = [
   {
     "id": 21,
     "name": "Aspirin 75mg (EC)",
-    "category": "Pain Relief / Cardio",
-    "keywords": ["aspirin", "disprin", "ecosprin", "vasprin"],
-    "description": "Non-steroidal anti-inflammatory drug. Low doses inhibit platelet aggregation. Used as pain reliever and cardioprotective.",
-    "usedFor": ["Headache", "Fever", "Body Pain", "Heart Attack Prevention (low dose)", "Joint Pain"],
+    "category": "Antiplatelet / Cardiac",
+    "keywords": ["aspirin", "disprin", "ecosprin", "vasprin", "aspirin cardio", "heart ki dawa"],
+    "description": "Antiplatelet medicine (low-dose) that prevents blood clots. Used ONLY for heart patients to reduce risk of heart attack and stroke. NOT for fever or general pain.",
+    "usedFor": ["Heart Attack Prevention", "Stroke Prevention (Antiplatelet)", "Post Angioplasty / Stent", "Coronary Artery Disease"],
     "food": "After food",
-    "typicalUse": "Cardio: 1 tablet (75-150mg) once daily. Pain relief: 300-600mg every 4 hours.",
-    "sideEffects": ["Gastric irritation/bleeding", "Tinnitus", "Increased bleeding time", "Reye's syndrome in children"],
-    "avoidIf": ["Children <16 (Reye's risk)", "Active peptic ulcer", "Bleeding disorders", "Asthma triggers"],
+    "typicalUse": "1 tablet (75-150mg) once daily after food, as advised by cardiologist ONLY. Do NOT use for fever, headache or body pain.",
+    "sideEffects": ["Gastric irritation/bleeding", "Increased bleeding time", "Bruising easily", "Epistaxis (nose bleeds)"],
+    "avoidIf": ["Children <16", "Active peptic ulcer", "Bleeding disorders", "Asthma triggers", "Before surgery (inform doctor)"],
     "storage": "Store in cool, dry place. Protect from moisture (tablets hydrolyze).",
-    "warning": "Do not use for fever in children. Stop 1 week before surgery. Enteric coated for GI protection.",
-    "type": "OTC",
+    "warning": "SIRF HEART PATIENTS KE LIYE HAI. Bukar, sir dard ya body pain ke liye mat use karein. Use Paracetamol 500mg instead. Stop 7 days before surgery only after consulting cardiologist.",
+    "type": "Prescription",
     "image": "pill"
   },
   {
