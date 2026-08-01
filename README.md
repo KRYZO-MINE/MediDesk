@@ -2,6 +2,8 @@
 
 > Offline-first medical information website — search medicines by symptoms in **Hinglish / Hindi / English**. No AI, no APIs, runs entirely in the browser.
 
+![Medi Void — Social Preview / OG Image](assets/og-image.jpg)
+
 [![Vercel Deploy](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://example.com/placeholder)
 
 ---
