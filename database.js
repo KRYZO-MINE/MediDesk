@@ -382,11 +382,14 @@ let MEDICINE_DB = [];
  *   1. window.MEDICINES_INLINE  (from medicines-data.js - inlined full dataset)
  *   2. fetch("medicines.json")  (if served over http/https)
  *   3. FALLBACK_MEDS            (very small emergency dataset)
+ * Also applies any "Admin Live Test" temporary medicines saved in localStorage
+ * so users can preview additions before pasting into source files.
  * Returns a Promise<Array> of medicine objects.
  */
 async function loadMedicines() {
     if (typeof window !== "undefined" && Array.isArray(window.MEDICINES_INLINE) && window.MEDICINES_INLINE.length > 10) {
         MEDICINE_DB = window.MEDICINES_INLINE.slice();
+        _mergeAdminLiveTests();
         return MEDICINE_DB;
     }
     try {
@@ -395,6 +398,7 @@ async function loadMedicines() {
         const data = await response.json();
         if (Array.isArray(data) && data.length) {
             MEDICINE_DB = data;
+            _mergeAdminLiveTests();
             return MEDICINE_DB;
         }
         throw new Error("Empty or invalid JSON");
@@ -402,11 +406,30 @@ async function loadMedicines() {
         console.warn("Could not load medicines (file:// protocol or network issue). Using inlined dataset or final fallback.", err);
         if (typeof window !== "undefined" && Array.isArray(window.MEDICINES_INLINE) && window.MEDICINES_INLINE.length) {
             MEDICINE_DB = window.MEDICINES_INLINE.slice();
-            return MEDICINE_DB;
+        } else {
+            MEDICINE_DB = FALLBACK_MEDS;
         }
-        MEDICINE_DB = FALLBACK_MEDS;
+        _mergeAdminLiveTests();
         return MEDICINE_DB;
     }
+}
+
+/* Admin Live Test: adds temporary medicines (stored in localStorage by admin.js)
+   to the in-memory DB. These appear during the session and vanish when the user
+   clears tests (or clears localStorage). */
+function _mergeAdminLiveTests() {
+    try {
+        if (typeof localStorage === "undefined" || typeof MEDICINE_DB === "undefined" || !Array.isArray(MEDICINE_DB)) return;
+        const raw = localStorage.getItem("medivoid.admin_test_meds");
+        if (!raw) return;
+        const tests = JSON.parse(raw);
+        if (!Array.isArray(tests) || !tests.length) return;
+        tests.forEach(t => {
+            if (t && typeof t === "object" && t.id && !MEDICINE_DB.find(m => m && m.id === t.id)) {
+                MEDICINE_DB.push(t);
+            }
+        });
+    } catch (_) { /* ignore errors */ }
 }
 
 /** Very small fallback dataset (used only if JSON loading fails). */
@@ -498,7 +521,7 @@ function getAlphabeticalIndex() {
  * Expose as global (for browser script-tag inclusion)
  * ================================================================ */
 
-window.MediDeskDB = {
+window.MediVoidDB = {
     symptomMap,
     symptomToMedicineMap,
     popularSearches,
