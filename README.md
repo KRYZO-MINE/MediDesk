@@ -2,9 +2,25 @@
 
 > Offline-first medical information website — search medicines by symptoms in **Hinglish / Hindi / English**. No AI, no APIs, runs entirely in the browser.
 
-![Medi Void — Social Preview / OG Image](assets/og-image.jpg)
+<p align="center">
+  <img
+    src="https://medivoid.vercel.app/assets/og-image.jpg"
+    alt="Medi Void — Social Preview / OG Image"
+    style="max-width: 100%; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.35);"
+  />
+</p>
 
-[![Vercel Deploy](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://example.com/placeholder)
+<p align="center">
+  <a href="https://medivoid.vercel.app/">
+    <img
+      src="https://img.shields.io/badge/🔗_Live_on_Vercel-medi%20void-%232563eb?style=for-the-badge&logo=vercel&logoColor=white"
+      alt="Live on Vercel"
+    />
+  </a>
+  <a href="https://vercel.com/new/project?demo=https://medivoid.vercel.app/">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" height="28" />
+  </a>
+</p>
 
 ---
 
