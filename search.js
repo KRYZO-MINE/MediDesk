@@ -1,7 +1,7 @@
 /**
  * ================================================================
  * search.js
- * MediDesk Search Engine - Pure JavaScript, no AI, no libraries
+ * Medi Void Search Engine - Pure JavaScript, no AI, no libraries
  * ================================================================
  * Searches through the medicine database using:
  *  1. Symptom detection via keyword map (hinglish/hindi/english)
@@ -123,7 +123,7 @@ function fuzzyScore(token, target) {
  */
 function searchMedicines(query, options = {}) {
     const { type = "any", category = null } = options;
-    const db = window.MediDeskDB ? window.MediDeskDB.db : [];
+    const db = window.MediVoidDB ? window.MediVoidDB.db : [];
     if (!db.length) return [];
 
     const normalizedQuery = (query || "").toLowerCase().trim();
@@ -137,11 +137,11 @@ function searchMedicines(query, options = {}) {
     }
 
     // 1. Detect symptoms using the keyword mapping system
-    const detectedSymptoms = window.MediDeskDB
-        ? window.MediDeskDB.detectSymptoms(normalizedQuery)
+    const detectedSymptoms = window.MediVoidDB
+        ? window.MediVoidDB.detectSymptoms(normalizedQuery)
         : [];
-    const medicineTargets = window.MediDeskDB
-        ? window.MediDeskDB.getMedicineTargets(detectedSymptoms)
+    const medicineTargets = window.MediVoidDB
+        ? window.MediVoidDB.getMedicineTargets(detectedSymptoms)
         : [];
 
     // 2. Tokenize remaining query for direct field matching
@@ -167,7 +167,7 @@ function searchMedicines(query, options = {}) {
                     score += SCORE.SYMPTOM_MATCH_USED_FOR;
                     // Find which symptom produced this
                     for (const sym of detectedSymptoms) {
-                        const mapped = (window.MediDeskDB.symptomToMedicineMap[sym] || []).map(x => x.toLowerCase());
+                        const mapped = (window.MediVoidDB.symptomToMedicineMap[sym] || []).map(x => x.toLowerCase());
                         if (mapped.includes(uf)) matchedSymptomsSet.add(sym);
                     }
                 }
@@ -292,13 +292,13 @@ function getSuggestions(query, max = 8) {
         results.push({ text, type });
     };
 
-    const db = window.MediDeskDB ? window.MediDeskDB.db : [];
-    const symptoms = window.MediDeskDB ? Object.keys(window.MediDeskDB.symptomMap) : [];
+    const db = window.MediVoidDB ? window.MediVoidDB.db : [];
+    const symptoms = window.MediVoidDB ? Object.keys(window.MediVoidDB.symptomMap) : [];
 
     if (!q) {
         // Empty query: show popular + example
-        if (window.MediDeskDB) {
-            for (const s of window.MediDeskDB.popularSearches.slice(0, max)) {
+        if (window.MediVoidDB) {
+            for (const s of window.MediVoidDB.popularSearches.slice(0, max)) {
                 push(s, "popular");
             }
         }
@@ -308,7 +308,7 @@ function getSuggestions(query, max = 8) {
     // 1. Symptom match
     for (const sym of symptoms) {
         if (sym.toLowerCase().includes(q) ||
-            (window.MediDeskDB.symptomMap[sym] || []).some(v => v.toLowerCase().includes(q))) {
+            (window.MediVoidDB.symptomMap[sym] || []).some(v => v.toLowerCase().includes(q))) {
             push(sym.charAt(0).toUpperCase() + sym.slice(1), "symptom");
         }
         if (results.length >= max) break;
@@ -337,8 +337,8 @@ function getSuggestions(query, max = 8) {
     }
 
     // 4. Popular / example as fallback
-    if (results.length < max && window.MediDeskDB) {
-        for (const s of window.MediDeskDB.popularSearches) {
+    if (results.length < max && window.MediVoidDB) {
+        for (const s of window.MediVoidDB.popularSearches) {
             if (s.toLowerCase().includes(q)) push(s, "popular");
             if (results.length >= max) break;
         }
@@ -378,7 +378,7 @@ function groupByCategory(medicines) {
  * EXPORT
  * ==========================================================
  */
-window.MediDeskSearch = {
+window.MediVoidSearch = {
     searchMedicines,
     getSuggestions,
     filterByCategory,
