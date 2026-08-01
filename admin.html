@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Medi Void Admin Panel - Naye medicines add karo asani se. Form fill karo, JSON copy karo, bas!" />
+    <meta name="keywords" content="admin, add medicine, medi void admin, medicine creator" />
+    <meta name="author" content="Medi Void" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#2563eb" />
+    <title>Medi Void — Admin: Add New Medicine (Asaan Guide)</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Medi Void" />
+    <meta property="og:title" content="Medi Void — Admin: Add New Medicine" />
+    <meta property="og:description" content="Admin Panel: Naye medicines add karo asani se. Form fill karo, copy paste karo." />
+    <meta property="og:url" content="admin.html" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="hi_IN" />
+    <meta property="og:image" content="assets/og-image.jpg" />
+    <meta property="og:image:secure_url" content="assets/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Medi Void Admin Panel" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@MediVoid" />
+    <meta name="twitter:creator" content="@MediVoid" />
+    <meta name="twitter:title" content="Medi Void — Admin: Add New Medicine" />
+    <meta name="twitter:description" content="Admin Panel: Naye medicines add karo asani se." />
+    <meta name="twitter:image" content="assets/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Medi Void Admin Panel" />
+
+    <script>
+        // Tailwind Preflight (CSS reset) DISABLE karo — warna inputs/labels/Uiverse styles toot jaate hain
+        window.tailwind = window.tailwind || {};
+        tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Cpath d='M50 20v60M20 50h60' stroke='white' stroke-width='11' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body class="min-h-screen">
+
+    <!-- ============ ADMIN PASSWORD GATE (Uiverse.io login-box design) ============ -->
+    <div id="admin-gate" class="fixed inset-0 z-[999]" style="background: radial-gradient(ellipse at center, #0f172a 0%, #020617 100%);">
+        <!-- From Uiverse.io by guilhermeyohan -->
+        <div id="gate-box" class="gate-login-box">
+            <div class="gate-header">
+                <div class="gate-lock-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+                <h2 class="gate-title">ADMIN LOGIN</h2>
+                <p class="gate-subtitle">Enter credentials to continue</p>
+            </div>
+
+            <form id="gate-form" novalidate>
+                <div class="gate-user-box">
+                    <input id="gate-user" type="text" class="gate-input" placeholder=" " autocomplete="off" spellcheck="false" />
+                    <label class="gate-label">Username</label>
+                </div>
+                <div class="gate-user-box">
+                    <input id="gate-pass" type="password" class="gate-input" placeholder=" " autocomplete="off" spellcheck="false" />
+                    <label class="gate-label">Password</label>
+                </div>
+                <div id="gate-msg" class="gate-msg hidden"></div>
+                <div class="gate-send-wrap">
+                    <a href="#" id="gate-submit" class="gate-send-btn">
+                        <span class="gate-send-line gate-line-bottom"></span>
+                        <span class="gate-send-line gate-line-right"></span>
+                        <span class="gate-send-line gate-line-top"></span>
+                        <span class="gate-send-line gate-line-left"></span>
+                        SEND
+                    </a>
+                </div>
+            </form>
+
+            <div class="gate-home">
+                <a href="index.html" class="gate-home-link">← Back to Home</a>
+            </div>
+        </div>
+
+        <style id="gate-styles">
+            /* =========== GATE WRAPPER =========== */
+            .gate-login-box {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                width: 400px !important;
+                max-width: calc(100vw - 32px) !important;
+                padding: 40px !important;
+                transform: translate(-50%, -50%) !important;
+                background: rgba(24, 20, 20, 0.987) !important;
+                box-sizing: border-box !important;
+                box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6) !important;
+                border-radius: 10px !important;
+                color: #fff;
+                font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            }
+
+            /* =========== HEADER =========== */
+            .gate-header { text-align: center !important; margin-bottom: 30px !important; }
+            .gate-lock-icon {
+                width: 64px !important;
+                height: 64px !important;
+                margin: 0 auto 18px auto !important;
+                border-radius: 16px !important;
+                background: linear-gradient(135deg, #22c55e 0%, #34d399 100%) !important;
+                box-shadow: 0 12px 30px rgba(34, 197, 94, 0.35) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .gate-title    { margin: 0 0 4px 0 !important; font-size: 22px !important; color: #fff !important; font-weight: 800 !important; letter-spacing: 1px !important; }
+            .gate-subtitle { margin: 0 !important; font-size: 12px !important; color: rgba(189,184,184,0.85) !important; }
+
+            /* =========== FLOATING INPUTS =========== */
+            .gate-user-box { position: relative !important; margin-bottom: 30px !important; }
+            .gate-input {
+                width: 100% !important;
+                width: -moz-available;
+                width: -webkit-fill-available;
+                padding: 10px 0 !important;
+                font-size: 16px !important;
+                color: #fff !important;
+                border: none !important;
+                border-bottom: 1px solid #fff !important;
+                outline: none !important;
+                background: transparent !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                font-family: inherit !important;
+                line-height: 1.4 !important;
+                height: auto !important;
+            }
+            .gate-input:focus,
+            .gate-input:not(:placeholder-shown) {
+                border-bottom: 1px solid #03f40f !important;
+            }
+            .gate-label {
+                position: absolute !important;
+                top: 10px !important;
+                left: 0 !important;
+                padding: 10px 0 !important;
+                font-size: 16px !important;
+                color: #fff !important;
+                pointer-events: none !important;
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                background: transparent !important;
+                font-weight: 400 !important;
+            }
+            /* Magic floating rule — when input focused OR has value → label goes up */
+            .gate-user-box .gate-input:focus ~ .gate-label,
+            .gate-user-box .gate-input:not(:placeholder-shown) ~ .gate-label,
+            .gate-user-box .gate-input.filled ~ .gate-label {
+                top: -20px !important;
+                left: 0 !important;
+                color: #bdb8b8 !important;
+                font-size: 12px !important;
+            }
+            /* Dummy invisible placeholder taaki :not(:placeholder-shown) kaam kare always when typed */
+            .gate-input::placeholder { color: transparent !important; }
+            .gate-input::-webkit-input-placeholder { color: transparent !important; }
+
+            /* =========== SEND BUTTON + NEON 4-SIDE ANIMATION =========== */
+            .gate-send-wrap { text-align: center !important; margin-top: 10px !important; margin-bottom: 10px !important; }
+            .gate-send-btn {
+                position: relative !important;
+                display: inline-block !important;
+                padding: 10px 28px !important;
+                color: #ffffff !important;
+                font-size: 16px !important;
+                font-weight: 600 !important;
+                text-decoration: none !important;
+                text-transform: uppercase !important;
+                overflow: hidden !important;
+                transition: 0.5s !important;
+                letter-spacing: 4px !important;
+                cursor: pointer !important;
+                border-radius: 2px !important;
+                background: transparent !important;
+                border: none !important;
+            }
+            .gate-send-btn:hover {
+                background: #03f40f !important;
+                color: #061008 !important;
+                border-radius: 5px !important;
+                box-shadow:
+                    0 0 5px #03f40f,
+                    0 0 25px #03f40f,
+                    0 0 50px #03f40f,
+                    0 0 100px #03f40f !important;
+            }
+            .gate-send-line {
+                position: absolute !important;
+                display: block !important;
+            }
+            /* Bottom: left → right */
+            @keyframes gate-anim-bottom {
+                0%   { left: -100%; }
+                50%, 100% { left: 100%; }
+            }
+            .gate-line-bottom {
+                bottom: 0 !important;
+                left: -100% !important;
+                width: 100% !important;
+                height: 2px !important;
+                background: linear-gradient(90deg, transparent, #03f40f) !important;
+                animation: gate-anim-bottom 2s linear infinite !important;
+            }
+            /* Right: bottom → top */
+            @keyframes gate-anim-right {
+                0%   { top: 100%; }
+                50%, 100% { top: -100%; }
+            }
+            .gate-line-right {
+                top: -100% !important;
+                right: 0 !important;
+                width: 2px !important;
+                height: 100% !important;
+                background: linear-gradient(180deg, transparent, #03f40f) !important;
+                animation: gate-anim-right 2s linear infinite !important;
+                animation-delay: 0.5s !important;
+            }
+            /* Top: right → left */
+            @keyframes gate-anim-top {
+                0%   { right: -100%; }
+                50%, 100% { right: 100%; }
+            }
+            .gate-line-top {
+                top: 0 !important;
+                right: -100% !important;
+                width: 100% !important;
+                height: 2px !important;
+                background: linear-gradient(270deg, transparent, #03f40f) !important;
+                animation: gate-anim-top 2s linear infinite !important;
+                animation-delay: 1s !important;
+            }
+            /* Left: top → bottom */
+            @keyframes gate-anim-left {
+                0%   { top: -100%; }
+                50%, 100% { top: 100%; }
+            }
+            .gate-line-left {
+                top: -100% !important;
+                left: 0 !important;
+                width: 2px !important;
+                height: 100% !important;
+                background: linear-gradient(0deg, transparent, #03f40f) !important;
+                animation: gate-anim-left 2s linear infinite !important;
+                animation-delay: 1.5s !important;
+            }
+
+            /* =========== HOME LINK =========== */
+            .gate-home      { margin-top: 22px !important; text-align: center !important; }
+            .gate-home-link {
+                font-size: 12px !important;
+                color: rgba(189,184,184,0.7) !important;
+                text-decoration: none !important;
+                transition: color 0.3s !important;
+                letter-spacing: 0.5px !important;
+            }
+            .gate-home-link:hover { color: #03f40f !important; }
+
+            /* =========== MESSAGES =========== */
+            .gate-msg { margin-bottom: 15px !important; }
+            .gate-err {
+                border: 1px solid rgba(248,113,113,0.5) !important;
+                background: rgba(239,68,68,0.1) !important;
+                border-radius: 6px !important;
+                padding: 8px 12px !important;
+                color: #fca5a5 !important;
+                font-size: 12.5px !important;
+                text-align: center !important;
+                animation: gate-msg-shake 380ms ease-in-out !important;
+            }
+            .gate-ok {
+                border: 1px solid rgba(34,197,94,0.5) !important;
+                background: rgba(34,197,94,0.1) !important;
+                border-radius: 6px !important;
+                padding: 8px 12px !important;
+                color: #86efac !important;
+                font-size: 12.5px !important;
+                text-align: center !important;
+            }
+            @keyframes gate-msg-shake {
+                0%,100% { transform: translateX(0); }
+                20%     { transform: translateX(-8px); }
+                40%     { transform: translateX(8px); }
+                60%     { transform: translateX(-6px); }
+                80%     { transform: translateX(6px); }
+            }
+
+            /* Responsive: mobile screens */
+            @media (max-width: 480px) {
+                .gate-login-box { padding: 28px 22px !important; }
+                .gate-send-btn { padding: 10px 20px !important; letter-spacing: 3px !important; font-size: 14px !important; }
+            }
+        </style>
+    </div>
+    <!-- Gate END — ye upar rehna chahiye taaki sabse pehle dikhe -->
+
+    <!-- ============ NAVBAR ============ -->
+    <header id="navbar" class="navbar px-4 sm:px-6 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 shadow-sm flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </div>
+                <div class="leading-tight">
+                    <div class="logo-text text-2xl">Medi Void</div>
+                    <div class="text-xs" style="color: var(--color-text-muted);">Medicine Info, Offline</div>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-1" style="color: var(--color-text-soft);">
+                <a href="index.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">🏠 Home</a>
+                <a href="categories.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">🗂 Categories</a>
+                <a href="az-list.html" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors">🔤 A–Z List</a>
+                <a href="favorites.html" id="nav-favorites" class="px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors relative">
+                    ❤️ Favorites
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="btn btn-outline btn-sm hidden sm:inline-flex items-center gap-1.5">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    Back to Site
+                </a>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+                    <svg id="icon-sun" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                    <svg id="icon-moon" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden theme-toggle" aria-label="Open menu">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M3 12h18M3 18h18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden mt-3 hidden grid gap-2 px-1"></div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 pt-6">
+
+        <!-- ============ PAGE HERO + STEP GUIDE ============ -->
+        <section class="hero-gradient rounded-[28px] px-5 sm:px-10 py-10 sm:py-12 relative overflow-hidden animate-fade-up mb-10">
+            <div class="pointer-events-none absolute inset-0 opacity-50 dark:opacity-30"
+                 style="background: radial-gradient(600px 300px at 0% 100%, transparent, rgba(59,130,246,0.28) 40%, transparent 70%);"></div>
+            <div class="relative">
+                <span class="badge badge-primary inline-flex items-center gap-1.5 mb-4 animate-pop-in">
+                    🔧 Admin Mode · Sirf aapke liye
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight animate-fade-up delay-1" style="color: var(--color-text);">
+                    Add <span class="logo-text">Naya Medicine</span>
+                </h1>
+                <p class="mt-3 text-base sm:text-lg max-w-2xl animate-fade-up delay-2" style="color: var(--color-text-soft);">
+                    Form fill karo, copy karo, paste karo — buss! Tech knowledge ki zaroorat nahi.
+                </p>
+
+                <!-- Step Card (In-Page Tutorial) -->
+                <div class="mt-7 grid md:grid-cols-3 gap-4 animate-fade-up delay-3">
+                    <div class="card p-4 sm:p-5 relative overflow-hidden">
+                        <div class="absolute -top-1 -right-1 w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-sm shadow-lg" style="background: var(--color-primary);">1</div>
+                        <h3 class="font-bold text-lg mb-1.5" style="color: var(--color-text);">📝 Form Fill Karo</h3>
+                        <p class="text-sm" style="color: var(--color-text-muted);">Neeche diye hue form ko fill karo. Jitna zyada detail utna better. Dropdowns already set hain.</p>
+                    </div>
+                    <div class="card p-4 sm:p-5 relative overflow-hidden">
+                        <div class="absolute -top-1 -right-1 w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-sm shadow-lg" style="background: var(--color-primary);">2</div>
+                        <h3 class="font-bold text-lg mb-1.5" style="color: var(--color-text);">🧪 Test Karo (Optional)</h3>
+                        <p class="text-sm" style="color: var(--color-text-muted);">"Live Test" dabao — medicine site pe temporary dikhne lagegi. Refresh = undo ho jayega.</p>
+                    </div>
+                    <div class="card p-4 sm:p-5 relative overflow-hidden">
+                        <div class="absolute -top-1 -right-1 w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-sm shadow-lg" style="background: var(--color-primary);">3</div>
+                        <h3 class="font-bold text-lg mb-1.5" style="color: var(--color-text);">📋 Copy → Paste Karo</h3>
+                        <p class="text-sm" style="color: var(--color-text-muted);">Do text boxes aayenge niche: <b>Step A</b> → medicines.json mein paste. <b>Step B</b> → medicines-data.js mein paste. Bas done!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ TWO COLUMN: FORM + LIVE PREVIEW ============ -->
+        <div class="grid lg:grid-cols-5 gap-6">
+
+            <!-- LEFT: FORM -->
+            <div class="lg:col-span-3 space-y-5 animate-fade-up delay-2">
+
+                <div class="card p-5 sm:p-6">
+                    <h2 class="text-xl font-extrabold mb-4 flex items-center gap-2" style="color: var(--color-text);">
+                        <span class="inline-flex w-8 h-8 rounded-lg items-center justify-center text-white text-sm" style="background: var(--color-primary);">✍️</span>
+                        Medicine Details Fill Karo
+                    </h2>
+
+                    <form id="medicine-form" class="space-y-5">
+
+                        <!-- Row 1: Auto ID + Name -->
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                    🆔 ID <span class="text-xs font-normal" style="color: var(--color-text-muted);">(Auto fill, mat change karo)</span>
+                                </label>
+                                <input id="f-id" type="number" class="input" readonly />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                    💊 Medicine Name <span style="color: var(--color-danger);">*</span>
+                                </label>
+                                <input id="f-name" type="text" class="input" placeholder="e.g. Dolo 650 Tablet" />
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Category + Type + Image -->
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                    🗂 Category <span style="color: var(--color-danger);">*</span>
+                                </label>
+                                <select id="f-category" class="input"></select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                    📋 Type
+                                </label>
+                                <select id="f-type" class="input">
+                                    <option value="OTC">OTC (Bina prescription)</option>
+                                    <option value="Prescription">Prescription (Doctor ke liye)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                    🎨 Icon
+                                </label>
+                                <select id="f-image" class="input">
+                                    <option value="pill">💊 Goli / Tablet</option>
+                                    <option value="capsule">💊 Capsule</option>
+                                    <option value="syrup">🧪 Syrup</option>
+                                    <option value="cream">🧴 Cream / Ointment</option>
+                                    <option value="drops">👁️ Drops (Eye/Ear)</option>
+                                    <option value="spray">💨 Spray / Inhaler</option>
+                                    <option value="injection">💉 Injection</option>
+                                    <option value="powder">🫖 Powder / Sachet</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                📝 Short Description <span style="color: var(--color-danger);">*</span>
+                            </label>
+                            <textarea id="f-description" rows="2" class="input resize-y" placeholder="2 lines: Ye medicine kiski hai, kya kaam karta hai."></textarea>
+                        </div>
+
+                        <!-- Food + Typical Use -->
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">🍽 Food Timing</label>
+                                <select id="f-food" class="input">
+                                    <option value="Either">Kabhi bhi (Either)</option>
+                                    <option value="After food">Khana khane ke baad</option>
+                                    <option value="Before food">Khana khane se pehle</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">💊 Typical Use (Dosage)</label>
+                                <input id="f-typicalUse" type="text" class="input" placeholder="e.g. 1 tablet twice a day after food" />
+                            </div>
+                        </div>
+
+                        <!-- Keywords (tag input style) -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                🔑 Search Keywords (Brand Names) <span class="text-xs font-normal" style="color: var(--color-text-muted);">(Comma se alag karo)</span>
+                            </label>
+                            <input id="f-keywords" type="text" class="input" placeholder="e.g. dolo, dolo 650, paracetamol, calpol, crocin" />
+                            <div class="text-xs mt-1" style="color: var(--color-text-muted);">
+                                💡 Tip: Common brand names, local names, short forms — sab likho. Jitna hoga utna search mein match karega.
+                            </div>
+                        </div>
+
+                        <!-- Used For - Clickable suggestions + manual input -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                🎯 Used For (Ye medicine kin bimariyo me kaam aata hai) <span style="color: var(--color-danger);">*</span>
+                            </label>
+                            <div id="usedfor-suggestions" class="flex flex-wrap gap-1.5 mb-2"></div>
+                            <input id="f-usedFor" type="text" class="input" placeholder="Upar chip tap karo, ya manual comma-separated likho: Headache, Fever, Toothache" />
+                            <div class="text-xs mt-1" style="color: var(--color-text-muted);">
+                                ⚠️ Important: Blue chips tap karo agar match ho — symptom search sirf in standard names se hi match karega.
+                            </div>
+                        </div>
+
+                        <!-- Side Effects -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                ⚠️ Common Side Effects <span class="text-xs font-normal" style="color: var(--color-text-muted);">(Comma se alag)</span>
+                            </label>
+                            <input id="f-sideEffects" type="text" class="input" placeholder="e.g. Nausea, Mild drowsiness, Dry mouth" />
+                        </div>
+
+                        <!-- Avoid If -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                🚫 Avoid If <span class="text-xs font-normal" style="color: var(--color-text-muted);">(Comma se alag)</span>
+                            </label>
+                            <input id="f-avoidIf" type="text" class="input" placeholder="e.g. Pregnancy, Severe kidney disease, Allergy to paracetamol" />
+                        </div>
+
+                        <!-- Storage + Warning -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">📦 Storage Instructions</label>
+                            <input id="f-storage" type="text" class="input" placeholder="e.g. Store at room temperature below 30°C. Keep dry." />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5" style="color: var(--color-text);">
+                                ⚠️ Safety Warning <span style="color: var(--color-danger);">*</span>
+                            </label>
+                            <textarea id="f-warning" rows="2" class="input resize-y" placeholder="Zaroori warnings: Consult doctor, max dose, pregnancy caution etc."></textarea>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button type="button" id="btn-live-test" class="btn btn-outline inline-flex items-center gap-2">
+                                🧪 Live Preview (Test karo)
+                            </button>
+                            <button type="button" id="btn-generate" class="btn btn-primary inline-flex items-center gap-2">
+                                ✨ Generate JSON → Copy Karo
+                            </button>
+                            <button type="button" id="btn-reset" class="btn btn-ghost inline-flex items-center gap-2">
+                                🗑️ Form Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ============ OUTPUT: STEP A + STEP B ============ -->
+                <div id="output-section" class="hidden space-y-5 animate-fade-up">
+
+                    <div class="card p-5 sm:p-6 border-l-4" style="border-left-color: var(--color-primary);">
+                        <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+                            <h3 class="text-lg font-extrabold flex items-center gap-2" style="color: var(--color-text);">
+                                <span class="inline-flex w-7 h-7 rounded-md items-center justify-center font-black text-white text-xs" style="background: var(--color-primary);">A</span>
+                                Step A: medicines.json ke liye Copy
+                            </h3>
+                            <button type="button" id="copy-json" class="btn btn-primary btn-sm inline-flex items-center gap-1.5">
+                                📋 Copy Text
+                            </button>
+                        </div>
+                        <p class="text-sm mb-3" style="color: var(--color-text-muted);">
+                            Niche text ko <b>copy</b> karo → <code>medicines.json</code> file kholo → last medicine ke <b>baad comma lagake</b> ye paste karo.
+                        </p>
+                        <pre id="out-json" class="output-pre code-block"></pre>
+                    </div>
+
+                    <div class="card p-5 sm:p-6 border-l-4" style="border-left-color: #059669;">
+                        <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+                            <h3 class="text-lg font-extrabold flex items-center gap-2" style="color: var(--color-text);">
+                                <span class="inline-flex w-7 h-7 rounded-md items-center justify-center font-black text-white text-xs" style="background: #059669;">B</span>
+                                Step B: medicines-data.js ke liye Copy
+                            </h3>
+                            <button type="button" id="copy-js" class="btn btn-primary btn-sm inline-flex items-center gap-1.5" style="background: #059669;">
+                                📋 Copy Text
+                            </button>
+                        </div>
+                        <p class="text-sm mb-3" style="color: var(--color-text-muted);">
+                            Ye same text → <code>medicines-data.js</code> file mein bhi paste karo. <b>(File:// protocol ke liye zaruri hai — warna local mein nahi chalega)</b>
+                        </p>
+                        <pre id="out-js" class="output-pre code-block"></pre>
+                    </div>
+
+                    <div class="card p-5 sm:p-6" style="background: var(--color-primary-bg); border-color: var(--color-primary-light);">
+                        <h3 class="text-lg font-extrabold mb-2" style="color: var(--color-text);">✅ Save Ke Baad Verify Karo (5 Sec Mein)</h3>
+                        <ol class="list-decimal list-inside space-y-1 text-sm" style="color: var(--color-text-soft);">
+                            <li>index.html kholo → medicine name search karo → dikhna chahiye.</li>
+                            <li>Category page par us category mein count increase ho gaya.</li>
+                            <li>A-Z list mein bhi aa gaya.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Live Test Result -->
+                <div id="live-msg" class="hidden"></div>
+
+            </div>
+
+            <!-- RIGHT: LIVE PREVIEW CARD -->
+            <div class="lg:col-span-2 space-y-5 animate-fade-up delay-3">
+
+                <!-- Sticky on desktop -->
+                <div class="lg:sticky lg:top-4 space-y-5">
+
+                    <div class="card p-5 sm:p-6">
+                        <h2 class="text-xl font-extrabold mb-4 flex items-center gap-2" style="color: var(--color-text);">
+                            <span class="inline-flex w-8 h-8 rounded-lg items-center justify-center text-white text-sm" style="background: var(--color-primary);">👁️</span>
+                            Live Preview
+                        </h2>
+                        <div id="preview-card" class="card p-0 overflow-hidden opacity-90">
+                            <div class="p-5">
+                                <div class="flex items-start justify-between gap-2 mb-3">
+                                    <div id="preview-icon" class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl"
+                                         style="background: var(--color-primary-bg); color: var(--color-primary);">💊</div>
+                                    <div class="flex flex-wrap justify-end gap-1.5">
+                                        <span id="preview-type" class="badge badge-otc">OTC</span>
+                                        <span id="preview-category" class="badge badge-soft">—</span>
+                                    </div>
+                                </div>
+                                <h3 id="preview-name" class="text-xl font-extrabold mb-1.5 tracking-tight" style="color: var(--color-text);">Medicine Name</h3>
+                                <p id="preview-desc" class="text-sm mb-3 leading-relaxed" style="color: var(--color-text-soft);">
+                                    Form fill karte hi yahan live preview aayega.
+                                </p>
+                                <div id="preview-usedfor" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                            <div class="grid grid-cols-3 divide-x border-t" style="border-color: var(--color-border);">
+                                <div class="px-3 py-2.5 text-center">
+                                    <div class="text-[10px] font-semibold uppercase tracking-wider mb-0.5" style="color: var(--color-text-muted);">Food</div>
+                                    <div id="preview-food" class="text-xs font-semibold" style="color: var(--color-text);">—</div>
+                                </div>
+                                <div class="px-3 py-2.5 text-center">
+                                    <div class="text-[10px] font-semibold uppercase tracking-wider mb-0.5" style="color: var(--color-text-muted);">Used For</div>
+                                    <div id="preview-count" class="text-xs font-semibold" style="color: var(--color-text);">0 items</div>
+                                </div>
+                                <div class="px-3 py-2.5 text-center">
+                                    <div class="text-[10px] font-semibold uppercase tracking-wider mb-0.5" style="color: var(--color-text-muted);">Keywords</div>
+                                    <div id="preview-kw" class="text-xs font-semibold" style="color: var(--color-text);">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Tips -->
+                    <div class="info-card">
+                        <h3 class="!mb-3">💡 Quick Smart Tips</h3>
+                        <ul class="space-y-2 text-sm" style="color: var(--color-text-soft);">
+                            <li class="flex gap-2"><span>🔑</span><span><b>Keywords mein local/brand names</b> add karo — search mein yehi match karega.</span></li>
+                            <li class="flex gap-2"><span>🎯</span><span><b>Used For</b> blue chips tap karo — warna symptom search match nahi karega.</span></li>
+                            <li class="flex gap-2"><span>🧪</span><span>Live Test karo — agar sab theek lage, hi copy paste karo.</span></li>
+                            <li class="flex gap-2"><span>🆔</span><span>ID kabhi mat badlo — auto set hota hai, repeat nahi hona chahiye.</span></li>
+                            <li class="flex gap-2"><span>📋</span><span><b>Do files</b> mein paste karo — ek mein bhool jaoge toh local file pe kaam nahi karega.</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Export Full DB -->
+                    <div class="card p-5 sm:p-6">
+                        <h3 class="text-lg font-bold mb-3 flex items-center gap-2" style="color: var(--color-text);">📦 Backup / Export</h3>
+                        <p class="text-sm mb-3" style="color: var(--color-text-muted);">Saari medicines ka full backup le lo — har update se pehle.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button id="btn-export-db" type="button" class="btn btn-outline btn-sm inline-flex items-center gap-1.5">⬇️ Download Full DB JSON</button>
+                            <button id="btn-clear-test" type="button" class="btn btn-ghost btn-sm inline-flex items-center gap-1.5">🧹 Clear Live Tests</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-footer mt-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 flex items-center justify-center text-white shadow-sm">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </div>
+                        <div class="logo-text text-xl font-extrabold">Medi Void</div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color: var(--color-text-muted);">
+                        Offline medicine information companion. Search by symptoms in Hinglish / Hindi / English and find relevant medicines instantly.
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <span class="badge badge-otc">100% Offline</span>
+                        <span class="badge badge-info">No AI</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="footer-link">🏠 Home</a></li>
+                        <li><a href="categories.html" class="footer-link">🗂 Categories</a></li>
+                        <li><a href="az-list.html" class="footer-link">🔤 A–Z List</a></li>
+                        <li><a href="favorites.html" class="footer-link">❤️ Favorites</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Admin Tools</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="admin.html" class="footer-link" style="color: var(--color-primary); font-weight: 600;">🔧 Add New Medicine</a></li>
+                        <li><a href="index.html?q=paracetamol" class="footer-link">🔍 Test Search</a></li>
+                        <li><a href="categories.html" class="footer-link">📊 Category Counts</a></li>
+                        <li><a href="az-list.html" class="footer-link">📋 All Medicines Count</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4" style="color: var(--color-text);">Legal &amp; Info</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="disclaimer.html" class="footer-link">⚠️ Medical Disclaimer</a></li>
+                        <li><a href="disclaimer.html" class="footer-link">📄 Terms of Use</a></li>
+                        <li><a href="disclaimer.html#privacy" class="footer-link">🔒 Privacy Note</a></li>
+                        <li><a href="disclaimer.html#about" class="footer-link">ℹ️ About Medi Void</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="text-xs" style="color: var(--color-text-muted);">
+                    © <span id="year"></span> Medi Void · Admin Panel · For internal medicine database editing only.
+                </div>
+                <div class="flex flex-wrap gap-3 text-xs" style="color: var(--color-text-muted);">
+                    <a href="disclaimer.html" class="footer-link">⚠ Read disclaimer</a>
+                    <a href="index.html" class="footer-link">← Back to home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts: DB load first, then search, then admin -->
+    <script src="medicines-data.js"></script>
+    <script src="database.js"></script>
+    <script src="search.js"></script>
+    <script src="app.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
