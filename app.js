@@ -1,7 +1,7 @@
 /**
  * ================================================================
  * app.js
- * MediDesk - Application Entry Point & UI Logic
+ * Medi Void - Application Entry Point & UI Logic
  * ================================================================
  * Handles:
  *   • App initialization & medicine DB load
@@ -21,9 +21,9 @@
      * LOCAL STORAGE HELPERS
      * --------------------------------------------------------- */
     const LS = {
-        THEME: "medidesk.theme",
-        FAVORITES: "medidesk.favorites",
-        RECENT: "medidesk.recent"
+        THEME: "medivoid.theme",
+        FAVORITES: "medivoid.favorites",
+        RECENT: "medivoid.recent"
     };
 
     function readLS(key, fallback) {
@@ -343,7 +343,7 @@
     };
 
     function renderHomeChips() {
-        const DB = window.MediDeskDB;
+        const DB = window.MediVoidDB;
         if (!DB) return;
 
         // Example chips
@@ -396,7 +396,7 @@
     }
 
     function renderCategories() {
-        const DB = window.MediDeskDB;
+        const DB = window.MediVoidDB;
         const grid = document.getElementById("categories-grid");
         if (!DB || !grid) return;
 
@@ -424,17 +424,22 @@
                 <div class="text-xs mt-1" style="color: var(--color-text-muted);">Tap to browse</div>
             `;
             card.addEventListener("click", () => {
-                homeState.categoryFilter = homeState.categoryFilter === cat ? null : cat;
-                updateCategoryChipsFromState();
-                applyFiltersAndRender();
-                document.getElementById("results-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                const onHome = !!document.getElementById("results-grid");
+                if (onHome) {
+                    homeState.categoryFilter = homeState.categoryFilter === cat ? null : cat;
+                    updateCategoryChipsFromState();
+                    applyFiltersAndRender();
+                    document.getElementById("results-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                } else {
+                    window.location.href = "index.html?cat=" + encodeURIComponent(cat);
+                }
             });
             grid.appendChild(card);
         });
     }
 
     function buildCategoryFilterChips() {
-        const DB = window.MediDeskDB;
+        const DB = window.MediVoidDB;
         const box = document.getElementById("category-filter");
         if (!DB || !box) return;
         box.innerHTML = "";
@@ -535,8 +540,8 @@
     }
 
     function applyFiltersAndRender() {
-        const SE = window.MediDeskSearch;
-        const DB = window.MediDeskDB;
+        const SE = window.MediVoidSearch;
+        const DB = window.MediVoidDB;
         const grid = document.getElementById("results-grid");
         const results = document.getElementById("results-section");
         const empty = document.getElementById("no-results");
@@ -732,7 +737,7 @@
         const onInput = () => {
             const v = input.value;
             if (clear) clear.classList.toggle("hidden", !v);
-            const SE = window.MediDeskSearch;
+            const SE = window.MediVoidSearch;
             if (!SE) return;
             const list = SE.getSuggestions(v, 8);
             suggestionActiveIdx = -1;
@@ -815,7 +820,7 @@
 
     /* ----------- A-Z index ------------- */
     function renderAZ() {
-        const DB = window.MediDeskDB;
+        const DB = window.MediVoidDB;
         const lettersBox = document.getElementById("alpha-letters");
         const sectionsBox = document.getElementById("alpha-sections");
         const filterInput = document.getElementById("alpha-search");
@@ -877,7 +882,7 @@
 
     /* ----------- Favorites grid (home page section) ------------- */
     function renderFavoritesGrid() {
-        const DB = window.MediDeskDB;
+        const DB = window.MediVoidDB;
         const grid = document.getElementById("favorites-grid");
         const empty = document.getElementById("favorites-empty");
         if (!DB || !grid) return;
@@ -920,7 +925,7 @@
     }
 
     function renderDetail() {
-        const DB = window.MediDeskDB;
+        const DB = window.MediVoidDB;
         if (!DB || !isDetailPage()) return;
 
         const loading = document.getElementById("loading");
@@ -935,7 +940,23 @@
             return;
         }
         content?.classList.remove("hidden");
-        document.title = `${med.name} — MediDesk Details`;
+        document.title = `${med.name} — Uses, Dosage, Side Effects | Medi Void`;
+
+        function updateMeta(selector, attr, value) {
+            const el = document.querySelector(selector);
+            if (el) el.setAttribute(attr, value);
+        }
+        const shortDesc = med.description || `${med.name} medicine information`;
+        const usedForText = (med.usedFor || []).slice(0, 2).join(", ") || "";
+        const metaDesc = `${med.name} - ${shortDesc}${usedForText ? ". Used for: " + usedForText : ""}. Complete details on Medi Void.`;
+        const ogTitle = `${med.name} — ${med.category || "Medicine"} Information | Medi Void`;
+        const ogDesc = `${med.name} ki poori jankari: uses, side effects, food instructions, storage aur safety warnings. Offline available on Medi Void.`;
+        updateMeta('meta[name="description"]', 'content', metaDesc);
+        updateMeta('meta[property="og:title"]', 'content', ogTitle);
+        updateMeta('meta[property="og:description"]', 'content', ogDesc);
+        updateMeta('meta[name="twitter:title"]', 'content', ogTitle);
+        updateMeta('meta[name="twitter:description"]', 'content', ogDesc);
+        updateMeta('meta[property="og:type"]', 'content', 'article');
 
         // Populate basic
         const setText = (id, text) => {
@@ -1052,7 +1073,7 @@
         updateFavCount();
 
         try {
-            await window.MediDeskDB.loadMedicines();
+            await window.MediVoidDB.loadMedicines();
         } catch (e) {
             console.error("Failed to load medicines", e);
         }
@@ -1071,6 +1092,16 @@
                 const input = document.getElementById("search-input");
                 if (input) input.value = q;
                 runSearch(q, true);
+            }
+
+            // Support ?cat= parameter for direct category browse (from categories.html)
+            const catParam = getQueryParam("cat");
+            if (catParam) {
+                homeState.categoryFilter = catParam;
+                updateCategoryChipsFromState();
+                applyFiltersAndRender();
+                document.getElementById("results-section")?.classList.remove("hidden");
+                document.getElementById("results-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
             }
         }
 
@@ -1105,7 +1136,7 @@
         if (_appInited) return;
         _appInited = true;
         try { await initApp(); }
-        catch (err) { console.error("MediDesk init error", err); }
+        catch (err) { console.error("Medi Void init error", err); }
     }
 
     if (document.readyState === "loading") {
